@@ -1,0 +1,41 @@
+x-common-variables: &common-variables
+  PYTHONUNBUFFERED: "yes"
+  DISPATCHER_ENDPOINT: http://dispatcher:8111
+  PLUGIN_EVENTS_URL: http://dispatcher:8111
+  PLUGIN_DATA_URL: http://dispatcher:8111
+  PLUGIN_MAX_FILE_SIZE: "100000000" # default limit of 100mb
+
+services:
+  unbox:
+    image: dockerhub.io/asdazul/plugin-unbox:9.0.0
+    environment:
+      <<: *common-variables
+    networks:
+      - azul
+
+  entropy:
+    image: dockerhub.io/asdazul/plugin-entropy:9.0.0
+    environment:
+      <<: *common-variables
+      DISPATCHER_ENDPOINT: http://dispatcher:8111
+    networks:
+      - azul
+
+  yara:
+    image: dockerhub.io/asdazul/plugin-yara:9.0.0
+    environment:
+      <<: *common-variables
+      PLUGIN_NAME_SUFFIX: demo
+      PLUGIN_SECURITY_OVERRIDE: OFFICIAL TLP:AMBER+STRICT
+      PLUGIN_YARA_RULES_PATH: /yara_rules
+      PLUGIN_MAX_FILE_SIZE: "10485760"
+      PLUGIN_VERSION_SUFFIX: "9.0.0"
+    volumes:
+      - ./yara_rules:/yara_rules
+    networks:
+      - azul
+
+networks:
+  azul:
+    name: azul_net
+    external: true

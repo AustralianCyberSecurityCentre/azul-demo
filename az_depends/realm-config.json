@@ -1,0 +1,207 @@
+{
+  "realm": "azul",
+  "displayName": "azul",
+  "enabled": true,
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "azul-access",
+        "description": "Provides base level access to view Azul"
+      }, 
+      {
+        "name": "azul_read",
+        "description": "Provides base level access to view Azul"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "name": "general",
+      "path": "/general",
+      "subGroups": [],
+      "attributes": {},
+      "realmRoles": ["azul-access"],
+      "clientRoles": {}
+    },
+    {
+      "name": "opensearch-admins",
+      "path": "/opensearch-admins"
+    }
+  ],
+  "users": [
+    {
+      "username": "opensearch-admin",
+      "enabled": true,
+      "groups": ["/general", "/opensearch-admins"],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "opensearch12345",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "basic",
+      "enabled": true,
+      "firstName": "basic",
+      "lastName": "user",
+      "email": "test@gmail.com",
+      "emailVerified": true,
+      "groups": ["/general"],
+      "realmRoles": ["default-roles-azul", "azul_read"],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "basic12345",
+          "temporary": false
+        }
+      ]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "azul",
+      "description": "Azul application scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm-role-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "lightweight.claim": "false",
+            "access.token.claim": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "aggregate.attrs": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false",
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "lightweight.claim": "false",
+            "access.token.claim": "true",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "id": "8bbe8ad9-55fb-4740-8777-f588e7e51419",
+      "name": "audience",
+      "description": "",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "true",
+        "gui.order": "",
+        "consent.screen.text": ""
+      },
+      "protocolMappers": [
+        {
+          "id": "2359beae-c587-4f6c-91bb-c07a9964f407",
+          "name": "web-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "azul-web",
+            "id.token.claim": "true",
+            "lightweight.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "azul-web",
+      "name": "azul-web",
+      "description": "Client to allow users to access azul through th ewebui or the restapi",
+      "rootUrl": "http://localhost:8000/",
+      "adminUrl": "http://localhost:8000/",
+      "baseUrl": "",
+      "enabled": true,
+      "alwaysDisplayInConsole": true,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://localhost:8000/*",
+        "http://localhost:8123/*",
+        "http://restapi:8080/*",
+        "http://webui:8000/*"
+      ],
+      "webOrigins": ["+"],
+      "protocol": "openid-connect",
+      "directAccessGrantsEnabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "defaultClientScopes": ["audience", "azul"],
+      "optionalClientScopes": ["offline_access"]
+    },
+    {
+      "id": "290d8b74-bf76-414f-8d29-7159a31e73d4",
+      "clientId": "opensearch-dashboards",
+      "name": "",
+      "description": "",
+      "rootUrl": "https://dashboard-opensearch.local/",
+      "adminUrl": "https://dashboard-opensearch.local/",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "ZvCuoqAGJreiuRzl9p8B6A1C3R966ZeF",
+      "redirectUris": ["https://dashboard-opensearch.local/*"],
+      "webOrigins": ["+"],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "client.secret.creation.time": "1754963088",
+        "backchannel.logout.session.required": "true",
+        "standard.token.exchange.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": ["azul"],
+      "optionalClientScopes": ["offline_access"]
+    }
+  ]
+}

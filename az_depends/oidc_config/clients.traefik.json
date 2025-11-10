@@ -1,0 +1,13 @@
+[
+  {
+    "client_id": "azul",
+    "grant_types": ["refresh_token", "authorization_code"],
+    "redirect_uris": ["http://web.traefik.me:8123/", "http://web.traefik.me:8123/ui/"]
+  },
+  {
+    "client_id": "opensearch",
+    "client_secret": "opensearch-secret",
+    "grant_types": ["refresh_token", "authorization_code"],
+    "redirect_uris": ["http://dashbaords.traefik.me:5601/", "http://dashboards.traefik.me:5601/auth/openid/login"]
+  }
+]

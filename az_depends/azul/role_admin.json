@@ -1,0 +1,32 @@
+{
+  "cluster_permissions": [
+    "cluster_monitor",
+    "cluster:admin/script/*",
+    "indices:admin/index_template/*",
+    "indices:admin/mapping/*",
+    "indices:admin/template/*",
+    "indices:data/read/*",
+    "indices:data/write/bulk",
+    "cluster:admin/script/*",
+    "kibana_user"
+  ],
+  "index_permissions": [
+    {
+      "index_patterns": ["azul.*"],
+      "allowed_actions": ["unlimited"]
+    },
+    {
+      "index_patterns": ["*"],
+      "allowed_actions": [
+        "indices:admin/resolve/index",
+        "indices:admin/aliases/get"
+      ]
+    }
+  ],
+  "tenant_permissions": [
+    {
+      "tenant_patterns": ["azul_tenant"],
+      "allowed_actions": ["unlimited"]
+    }
+  ]
+}

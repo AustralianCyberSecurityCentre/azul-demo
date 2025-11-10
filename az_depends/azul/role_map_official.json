@@ -1,0 +1,4 @@
+{
+  "backend_roles": ["azul_read"],
+  "description": "Maps s-official to azul_read in line with the default behaviour in azul-app/infra/values.yaml"
+}

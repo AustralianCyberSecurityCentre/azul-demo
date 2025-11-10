@@ -1,0 +1,16 @@
+{
+  "oauth_enabled": true,
+  "patch_upload_download": false,
+  "motd_hours": 24,
+  "motd_header": "Important Notice",
+  "motd_body": "This is a demo instance so out of respect for your RAM many plugins are not present.",
+  "motd_footer": "Close",
+  "deployment_colour": "#ffffff",
+  "deployment_back_colour": "#74099e",
+  "deployment_text": "demo",
+  "documentation_link": "/docs",
+  "oidc_url": "http://oidc.localhost/realms/azul/.well-known/openid-configuration",
+  "oidc_client": "azul-web",
+  "oidc_scopes": "openid offline_access azul audience",
+  "api_server": "/api"
+}

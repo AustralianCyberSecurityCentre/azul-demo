@@ -1,0 +1,54 @@
+---
+_meta:
+  type: "config"
+  config_version: 2
+
+config:
+  dynamic:
+    http:
+      anonymous_auth_enabled: false
+      xff:
+        enabled: false
+    authc:
+      basic_internal_auth_domain:
+        description: "Authenticate via HTTP Basic against internal users database"
+        http_enabled: true
+        transport_enabled: true
+        order: 1
+        http_authenticator:
+          type: basic
+          challenge: false
+        authentication_backend:
+          type: intern
+      openid_auth_domain:
+        http_enabled: true
+        transport_enabled: true
+        order: 0
+        http_authenticator:
+          type: openid
+          challenge: false
+          config:
+            subject_key: preferred_username
+            roles_key: roles
+            # jwks_uri: http://oidc:3000/jwks
+            openid_connect_url: http://oidc.localhost/realms/azul/.well-known/openid-configuration
+            openid_connect_idp:
+              verify_hostnames: false
+              enable_ssl: false
+        authentication_backend:
+          type: noop
+      # this would configure an external OIDC provider but is not required for integration tests
+      # openid_auth_domain:
+      #   http_enabled: true
+      #   transport_enabled: true
+      #   order: 2
+      #   http_authenticator:
+      #     type: openid
+      #     challenge: false
+      #     config:
+      #       subject_key: preferred_username
+      #       roles_key: roles
+      #       # assume aad
+      #       openid_connect_url: "https://external.example.com"
+      #   authentication_backend:
+      #     type: noop

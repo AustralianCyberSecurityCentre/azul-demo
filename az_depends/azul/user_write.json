@@ -1,0 +1,5 @@
+{
+  "password": "azulwriterpassword",
+  "backend_roles": ["azul_write"],
+  "description": "Service account for metastore writer testing"
+}

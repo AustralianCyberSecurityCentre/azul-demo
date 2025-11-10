@@ -1,0 +1,77 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+    volumes:
+      - ./traefik_config/traefik.yml:/etc/traefik/traefik.yml
+      - ./traefik_config/tls.yml:/etc/traefik/tls.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - certs:/etc/ssl/traefik
+    networks:
+    - azul
+
+  traefik-https-helper:
+    image: alpine/openssl
+    entrypoint: ["/bin/sh","-c"]
+    command:
+    - |
+      cd /etc/ssl/traefik
+      if [ -f cert.pem ]; then openssl x509 -enddate -noout -in cert.pem -checkend 86400 || exit; fi
+      wget traefik.me/cert.pem -O cert.pem
+      wget traefik.me/privkey.pem -O privkey.pem
+    volumes:
+      - certs:/etc/ssl/traefik
+    networks:
+    - azul
+
+  oidc:
+    environment:
+    - ISSUER=http://oidc.traefik.me:3000
+    labels:
+    - "traefik.http.routers.oidc.rule=Host(`oidc.traefik.me`)"
+    - "traefik.http.routers.oidc-tls.tls.domains[0].main=oidc.traefik.me"
+    - "traefik.http.routers.oidc-tls.tls.domains[0].sans=oidc-*.traefik.me"
+    - "traefik.http.services.oidc.loadbalancer.server.port=3000"
+    volumes:
+    - ./oidc_config/clients.traefik.json:/app/config/clients.json
+    networks:
+      azul:
+        aliases:
+        - oidc.traefik.me
+
+  opensearch:
+    image: opensearchproject/opensearch:2.6.0
+    environment:
+    - OIDC_URL=http://oidc.traefik.me
+    - OIDC_PORT=3000
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:2.6.0
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    ports:
+    - 5601:5601
+    expose:
+    - "5601"
+    labels:
+    - "traefik.http.routers.dashboards.rule=Host(`dashboards.traefik.me`)"
+    - "traefik.http.routers.dashboards-tls.tls.domains[0].main=dashboards.traefik.me"
+    - "traefik.http.routers.dashboards-tls.tls.domains[0].sans=dashboards-*.traefik.me"
+    - "traefik.http.services.dashboards.loadbalancer.server.port=5601"
+    volumes:
+    - ./opensearch_config/opensearch_dashboards.traefik.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
+    - ./opensearch_config/certs:/usr/share/opensearch-dashboards/certs
+    networks:
+    - azul
+
+
+volumes:
+  certs:
+    driver: local

@@ -1,0 +1,650 @@
+# metastore/ingestor/restapi common variables
+x-common-variables: &common-variables
+  PYTHONUNBUFFERED: "yes"
+  RESTAPI_LOG_LEVEL: info
+  RESTAPI_HOST: "0.0.0.0"
+  RESTAPI_RELOAD: "false"
+  RESTAPI_PREFIX: /api
+  RESTAPI_SECURITY: oidc
+  # OIDC_ISSUER: http://oidc:3000
+  OIDC_AUTHORITY_URL: "http://oidc.localhost/realms/azul"
+  OIDC_CLIENT_ID: azul-web
+  # OIDC_SCOPES: openid profile offline_access roles azul
+  OIDC_SCOPES: openid offline_access azul audience
+  CORS_ALLOW_HEADERS: "[]"
+  CORS_ALLOW_METHODS: "[]"
+  CORS_ALLOW_ORIGINS: "[]"
+  CORS_ALLOW_CREDENTIALS: "false"
+  METASTORE_EVENTS_URL: http://dispatcher:8111
+  METASTORE_DATA_URL: http://dispatcher:8111
+  METASTORE_DISPATCHER_EVENTS_URL: http://dispatcher:8111
+  METASTORE_DISPATCHER_STREAMS_URL: http://dispatcher:8111
+  METASTORE_OPENSEARCH_URL: https://opensearch:9200
+  METASTORE_CERTIFICATE_VERIFICATION: "false"
+  METASTORE_OPENSEARCH_USERNAME: azul_writer
+  METASTORE_OPENSEARCH_PASSWORD: azulwriterpassword
+  METASTORE_PARTITION: demo01
+  METASTORE_INGESTOR_VERSION_SUFFIX: "2"
+  METASTORE_CHECK_RESTAPI_TYPES: TRUE
+  SECURITY_DEFAULT: "OFFICIAL"
+  METASTORE_SOURCES: |-
+    {
+      "assemblyline": {
+        "description": "Samples forwarded to Azul by Assemblyline",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 6
+        },
+        "exclude_from_backup": true,
+        "expire_events_after": "2 weeks",
+        "icon_class": "gears",
+        "partition_unit": "month",
+        "references": [
+          {
+            "description": "Kind of submission (e.g USER)",
+            "name": "type",
+            "required": true
+          },
+          {
+            "description": "Short description of what/why samples collected",
+            "name": "description",
+            "required": true
+          },
+          {
+            "description": "User who submitted the sample",
+            "name": "user",
+            "required": false
+          }
+        ]
+      },
+      "incidents": {
+        "description": "Incident response and samples collected during investigations",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 3
+        },
+        "expire_events_after": "2 weeks",
+        "icon_class": "ambulance",
+        "partition_unit": "year",
+        "references": [
+          {
+            "description": "Task tracking identifier for incident or request",
+            "highlight": true,
+            "name": "task_id",
+            "required": true
+          },
+          {
+            "description": "Short description of what/why samples collected",
+            "name": "description",
+            "required": true
+          },
+          {
+            "description": "Investigation/operation name the samples were collected under",
+            "name": "operation",
+            "required": false
+          },
+          {
+            "description": "Local submitter or point of contact for samples",
+            "name": "user",
+            "required": false
+          }
+        ]
+      },
+      "reporting": {
+        "description": "Malware reports and blogs from public, partner and commercial sources",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 3
+        },
+        "expire_events_after": "2 weeks",
+        "icon_class": "book",
+        "partition_unit": "year",
+        "references": [
+          {
+            "description": "How widely the report was distributed, eg. public, commercial, partner",
+            "name": "distribution",
+            "required": true
+          },
+          {
+            "description": "The company or agency that authored the report",
+            "name": "publisher",
+            "required": true
+          },
+          {
+            "description": "The report's title",
+            "name": "title",
+            "required": true
+          },
+          {
+            "description": "Website the report was published to if applicable",
+            "name": "site",
+            "required": false
+          },
+          {
+            "description": "Local submitter or point of contact for samples",
+            "name": "user",
+            "required": false
+          },
+          {
+            "description": "Unique identifier",
+            "name": "id",
+            "required": false
+          }
+        ]
+      },
+      "samples": {
+        "description": "Generic source for miscellaneous or uncategorised samples",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 3
+        },
+        "expire_events_after": "2 weeks",
+        "icon_class": "bug",
+        "partition_unit": "year",
+        "references": [
+          {
+            "description": "Short description of what/why samples collected",
+            "name": "description",
+            "required": true
+          },
+          {
+            "description": "Submitter or point of contact for samples",
+            "name": "user",
+            "required": false
+          },
+          {
+            "description": "Internal team who are the data owners of the samples",
+            "name": "team",
+            "required": false
+          },
+          {
+            "description": "Any investigation/operation name the samples are collected under",
+            "highlight": true,
+            "name": "operation",
+            "required": false
+          }
+        ]
+      },
+      "tasking": {
+        "description": "Malware Analysis tasking and activities",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 3
+        },
+        "expire_events_after": "2 weeks",
+        "icon_class": "search",
+        "partition_unit": "year",
+        "references": [
+          {
+            "description": "Malware analysis task tracking identifier",
+            "highlight": true,
+            "name": "task_id",
+            "required": true
+          },
+          {
+            "description": "Short description of the task or samples",
+            "name": "description",
+            "required": true
+          },
+          {
+            "description": "Local submitter or point of contact for samples",
+            "name": "user",
+            "required": false
+          }
+        ]
+      },
+      "testing": {
+        "description": "Files submitted during testing of Azul",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 3
+        },
+        "exclude_from_backup": true,
+        "expire_events_after": "2 weeks",
+        "icon_class": "trash-alt",
+        "partition_unit": "year",
+        "references": [
+          {
+            "description": "Local submitter or point of contact for samples",
+            "highlight": true,
+            "name": "user",
+            "required": true
+          }
+        ]
+      },
+      "virustotal": {
+        "description": "Recent full take metadata and selected content from virustotal.com",
+        "elastic": {
+          "number_of_replicas": 1,
+          "number_of_shards": 5
+        },
+        "exclude_from_backup": true,
+        "expire_events_after": "2 days",
+        "icon_class": "cloud-download-alt",
+        "partition_unit": "week",
+        "references": [
+          {
+            "description": "Anonymised id of VirusTotal submitter",
+            "name": "submitter_id",
+            "required": false
+          },
+          {
+            "description": "Submission interface used to submit to VirusTotal",
+            "name": "interface",
+            "required": false
+          },
+          {
+            "description": "Region within country the submission originated from",
+            "name": "submitter_region",
+            "required": false
+          },
+          {
+            "description": "Country the submission originated from",
+            "name": "submitter_country",
+            "required": false
+          },
+          {
+            "description": "City within region the submission originated from",
+            "name": "submitter_city",
+            "required": false
+          }
+        ]
+      },
+      "watch": {
+        "description": "24/7 Operations Watch Tasking",
+        "elastic": {
+          "number_of_replicas": 2,
+          "number_of_shards": 3
+        },
+        "expire_events_after": "2 weeks",
+        "icon_class": "heartbeat",
+        "partition_unit": "year",
+        "references": [
+          {
+            "description": "Task tracking identifier for samples/activity",
+            "highlight": true,
+            "name": "task_id",
+            "required": true
+          },
+          {
+            "description": "Short description of why samples were obtained",
+            "name": "description",
+            "required": true
+          },
+          {
+            "description": "Local submitter or point of contact for task",
+            "name": "user",
+            "required": false
+          }
+        ]
+      }
+    }
+  SECURITY_LABELS: |-
+    {
+      "caveat": {
+        "options": [
+          {
+            "name": "FIREBALL"
+          },
+          {
+            "name": "TRUESTRIKE"
+          }
+        ],
+        "title": "Caveat"
+      },
+      "classification": {
+        "options": [
+          {
+            "name": "LESS OFFICIAL",
+            "priority": "0"
+          },
+          {
+            "name": "OFFICIAL",
+            "priority": "10"
+          },
+          {
+            "name": "MORE OFFICIAL",
+            "priority": "30"
+          }
+        ],
+        "title": "Classification"
+      },
+      "releasability": {
+        "options": [
+          {
+            "name": "REL:APPLE"
+          },
+          {
+            "name": "REL:BEE"
+          },
+          {
+            "name": "REL:CAR"
+          },
+          {
+            "name": "REL:DOG"
+          },
+          {
+            "name": "REL:ELEPHANT"
+          }
+        ],
+        "origin": "REL:APPLE",
+        "prefix": "REL:",
+        "title": "Releasability"
+      },
+      "tlp": {
+        "options": [
+          {
+            "name": "TLP:CLEAR"
+          },
+          {
+            "name": "TLP:GREEN"
+          },
+          {
+            "name": "TLP:AMBER"
+          },
+          {
+            "name": "TLP:AMBER+STRICT"
+          }
+        ],
+        "title": "TLP"
+      }
+    }
+  SECURITY_PRESETS:
+    '["MORE OFFICIAL FIREBALL REL:APPLE","MORE OFFICIAL REL:APPLE,BEE,CAR,DOG,ELEPHANT","OFFICIAL
+    TLP:AMBER+STRICT","OFFICIAL TLP:AMBER","OFFICIAL TLP:GREEN","OFFICIAL TLP:CLEAR","LESS
+    OFFICIAL TLP:CLEAR"]'
+  SECURITY_ALLOW_RELEASABILITY_PRIORITY_GTE: "30"
+  SECURITY_MINIMUM_REQUIRED_ACCESS: '["OFFICIAL"]'
+  SECURITY_ADMIN_ROLES: |-
+    [
+      "admin"
+    ]
+  METASTORE_STATUS_INDEX_CONFIG: |-
+    {
+      "number_of_replicas": 2,
+      "number_of_shards": 3
+    }
+  METASTORE_PLUGIN_INDEX_CONFIG: |-
+    {
+      "number_of_replicas": 2,
+      "number_of_shards": 3
+    }
+
+services:
+  dispatcher:
+    image: dockerhub.io/asdazul/dispatcher:9.0.0
+    ports:
+      - "8111:8111"
+    expose:
+      - "8111"
+    environment:
+      DP.EVENTS.GLOBAL_PARTITION_COUNT: "3"
+      DP.EVENTS.GLOBAL_REPLICA_COUNT: "1"
+      DP.EVENTS.KAFKA.ENDPOINT: "kafka:9092"
+      DP.EVENTS.KAFKA.TOPIC_PREFIX: demo01
+      DP.EVENTS.REDIS.ENDPOINT: "redis:6379"
+      DP.EVENTS.TOPICS: "[]"
+      DP.LOG_PATH: /logs/dispatcher/
+      DP.STREAMS.BACKEND: s3
+      DP.STREAMS.S3.BUCKET: "azul"
+      DP.STREAMS.S3.ENDPOINT: "minio:9000"
+      DP.STREAMS.S3.ACCESS_KEY: "minio-root-user"
+      DP.STREAMS.S3.SECRET_KEY: "minio-root-password"
+      DP.STREAMS.S3.SECURE: "false"
+      DP.EVENTS.SOURCES: |
+        sources:
+        assemblyline:
+          description: Samples forwarded to Azul by Assemblyline
+          elastic:
+            number_of_replicas: 2
+            number_of_shards: 6
+          exclude_from_backup: true
+          expire_events_after: 2 weeks
+          icon_class: gears
+          partition_unit: month
+          references:
+          - description: Kind of submission (e.g USER)
+            name: type
+            required: true
+          - description: Short description of what/why samples collected
+            name: description
+            required: true
+          - description: User who submitted the sample
+            name: user
+            required: false
+        incidents:
+          description: Incident response and samples collected during investigations
+          elastic:
+            number_of_replicas: 2
+            number_of_shards: 3
+          expire_events_after: 2 weeks
+          icon_class: ambulance
+          partition_unit: year
+          references:
+          - description: Task tracking identifier for incident or request
+            highlight: true
+            name: task_id
+            required: true
+          - description: Short description of what/why samples collected
+            name: description
+            required: true
+          - description:Investigation/operation name the samples were collected under
+            name:operation
+            required:false
+          - description:Local submitter or point of contact for samples
+            name:user
+            required:false
+        reporting: 
+          description: Malware reports and blogs from public, partner and commercial sources
+          elastic: 
+            number_of_replicas: 2
+            number_of_shards: 3
+          expire_events_after: 2 weeks
+          icon_class: book
+          partition_unit: year
+          references: 
+          - description: How widely the report was distributed, eg. public, commercial, partner
+            name: distribution
+            required: true
+          - description: The company or agency that authored the report
+            name: publisher
+            required: true
+          - description: The report's title
+            name: title
+            required: true
+          - description: Website the report was published to if applicable
+            name: site
+            required: false
+          - description: Local submitter or point of contact for samples
+            name: user
+            required: false
+          - description: Unique identifier
+            name: id
+            required: false
+        samples: 
+          description: Generic source for miscellaneous or uncategorised samples
+          elastic: 
+            number_of_replicas: 2
+            number_of_shards: 3
+          expire_events_after: 2 weeks
+          icon_class: bug
+          partition_unit: year
+          references: 
+          - description: Short description of what/why samples collected
+            name: description
+            required: true
+          - description: Submitter or point of contact for samples
+            name: user
+            required: false
+          - description: Internal team who are the data owners of the samples
+            name: team
+            required: false
+          - description: Any investigation/operation name the samples are collected under
+            highlight: true
+            name: operation
+            required: false
+        tasking: 
+          description: Malware Analysis tasking and activities
+          elastic: 
+            number_of_replicas: 2
+            number_of_shards: 3
+          expire_events_after: 2 weeks
+          icon_class: search
+          partition_unit: year
+          references: 
+          - description: Malware analysis task tracking identifier
+            highlight: true
+            name: task_id
+            required: true
+          - description: Short description of the task or samples
+            name: description
+            required: true
+          - description: Local submitter or point of contact for samples
+            name: user
+            required: false
+        testing: 
+          description: Files submitted during testing of Azul
+          elastic: 
+            number_of_replicas: 2
+            number_of_shards: 3
+          exclude_from_backup: true
+          expire_events_after: 2 weeks
+          icon_class: trash-alt
+          partition_unit: year
+          references: 
+          - description: Local submitter or point of contact for samples
+            highlight: true
+            name: user
+            required: true
+        virustotal: 
+          description: Recent full take metadata and selected content from virustotal.com
+          elastic: 
+            number_of_replicas: 1
+            number_of_shards: 5
+          exclude_from_backup: true
+          expire_events_after: 2 days
+          icon_class: cloud-download-alt
+          partition_unit: week
+          references: 
+          - description: Anonymised id of VirusTotal submitter
+            name: submitter_id
+            required: false
+          - description: Submission interface used to submit to VirusTotal
+            name: interface
+            required: false
+          - description: Region within country the submission originated from
+            name: submitter_region
+            required: false
+          - description: Country the submission originated from
+            name: submitter_country
+            required: false
+          - description: City within region the submission originated from
+            name: submitter_city
+            required: false
+        watch: 
+          description: 24/7 Operations Watch Tasking
+          elastic: 
+            number_of_replicas: 2
+            number_of_shards: 3
+          expire_events_after: 2 weeks
+          icon_class: heartbeat
+          partition_unit: year
+          references: 
+          - description: Task tracking identifier for samples/activity
+            highlight: true
+            name: task_id
+            required: true
+          - description: Short description of why samples were obtained
+            name: description
+            required: true
+          - description: Local submitter or point of contact for task
+            name: user
+            required: false
+    # volumes:
+    #   - './demo_bucket_config.json:/config.json'
+    networks:
+      - azul
+
+  redis:
+    image: redis:7.4.2
+    expose:
+      - "6379"
+    networks:
+      - azul
+
+  docs:
+    image: dockerhub.io/asdazul/docs:9.0.0
+    ports:
+      - "8124:8080"
+    expose:
+      - "8124"
+    # volumes:
+    # - ./config/docs.nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - azul
+
+  ingester:
+    image: dockerhub.io/asdazul/restapi-server:9.0.0
+    depends_on:
+      dispatcher:
+        condition: service_started
+      create_roles:
+        condition: service_completed_successfully
+    environment:
+      <<: *common-variables
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        azul-metastore ingest-plugin &
+        METASTORE_PROMETHEUS_PORT=9877 azul-metastore ingest-status &
+        METASTORE_PROMETHEUS_PORT=9878 azul-metastore ingest-binary
+    networks:
+      - azul
+
+  create_roles:
+    image: dockerhub.io/asdazul/restapi-server:9.0.0
+    entrypoint:
+      - /bin/bash
+      - -c
+      - azul-metastore apply-opensearch-config --rolesmapping --no-input
+    environment:
+      <<: *common-variables
+      METASTORE_OPENSEARCH_ADMIN_USERNAME: "azul_admin"
+      METASTORE_OPENSEARCH_ADMIN_PASSWORD: "dummyPassword!"
+    networks:
+      - azul
+
+  restapi:
+    image: dockerhub.io/asdazul/restapi-server:9.0.0
+    depends_on:
+      create_roles:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8080"
+    expose:
+      - "8000"
+    environment:
+      <<: *common-variables
+    networks:
+      - azul
+
+  web:
+    image: dockerhub.io/asdazul/webui:9.0.0
+    depends_on:
+      restapi:
+        condition: service_started
+    ports:
+      - "8123:8080"
+    expose:
+      - "8123"
+    volumes:
+      - ./config/web.nginx.conf:/etc/nginx/nginx.conf
+      - ./config/web.config.json:/usr/share/nginx/html/dist/browser/assets/config.json
+    networks:
+      - azul
+
+networks:
+  azul:
+    name: azul_net
+    external: true # Network is defined in az_depends/docker-compose.yml

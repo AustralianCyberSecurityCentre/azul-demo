@@ -1,0 +1,4 @@
+{
+  "backend_roles": ["azul_admin", "admin"],
+  "description": "grant access to everything."
+}

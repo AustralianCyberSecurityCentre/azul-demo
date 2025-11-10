@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  restapi:
+    environment:
+    - OIDC_ISSUER=https://oidc.traefik.me:3000
+    - OIDC_DISCOVERY_URL=http://oidc.traefik.me:3000/.well-known/openid-configuration
+    labels:
+    - "traefik.http.routers.restapi.rule=Host(`restapi.traefik.me`)"
+    - "traefik.http.routers.restapi-tls.tls.domains[0].main=restapi.traefik.me"
+    - "traefik.http.routers.restapi-tls.tls.domains[0].sans=restapi-*.traefik.me"
+    - "traefik.http.services.restapi.loadbalancer.server.port=8000"
+
+  web:
+    volumes:
+    - ./config/web.config.traefik.json:/usr/share/nginx/html/dist/assets/config.json
+    labels:
+    - "traefik.http.routers.web.rule=Host(`web.traefik.me`)"
+    - "traefik.http.routers.web-tls.tls.domains[0].main=web.traefik.me"
+    - "traefik.http.routers.web-tls.tls.domains[0].sans=web-*.traefik.me"
+    - "traefik.http.services.web.loadbalancer.server.port=80"

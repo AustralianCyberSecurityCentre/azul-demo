@@ -1,0 +1,12 @@
+[
+  {
+    "client_id": "azul",
+    "grant_types": ["refresh_token", "authorization_code"],
+    "redirect_uris": ["http://localhost:8123/", "http://localhost:8123/ui/", "http://localhost:8123/ui/callback"]
+  },
+  {
+    "client_id": "service",
+    "client_secret": "service",
+    "grant_types": ["refresh_token", "client_credentials"]
+  }
+]

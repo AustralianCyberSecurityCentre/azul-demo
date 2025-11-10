@@ -1,0 +1,37 @@
+[
+  {
+    "email": "user",
+    "password": "user",
+    "email_verified": true,
+    "family_name": "moose",
+    "given_name": "anony",
+    "locale": "en-gb",
+    "name": "anony-moose",
+    "roles": [
+      "azul_admin",
+      "OFFICIAL",
+      "TLP:CLEAR",
+      "TLP:GREEN",
+      "TLP:AMBER",
+      "TLP:AMBER+STRICT"
+    ],
+    "org": "DEMO"
+  },
+  {
+    "email": "service",
+    "email_verified": true,
+    "family_name": "account",
+    "given_name": "service",
+    "locale": "en-gb",
+    "name": "service-account",
+    "roles": [
+      "azul_admin",
+      "OFFICIAL",
+      "TLP:CLEAR",
+      "TLP:GREEN",
+      "TLP:AMBER",
+      "TLP:AMBER+STRICT"
+    ],
+    "org": "DEMO"
+  }
+]
