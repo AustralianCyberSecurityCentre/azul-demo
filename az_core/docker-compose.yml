@@ -372,7 +372,7 @@ x-common-variables: &common-variables
 
 services:
   dispatcher:
-    image: dockerhub.io/asdazul/dispatcher:9.0.0
+    image: docker.io/asdazul/dispatcher:9.0.0
     ports:
       - "8111:8111"
     expose:
@@ -573,7 +573,7 @@ services:
       - azul
 
   docs:
-    image: dockerhub.io/asdazul/docs:9.0.0
+    image: docker.io/asdazul/docs:9.0.0
     ports:
       - "8124:8080"
     expose:
@@ -584,7 +584,7 @@ services:
       - azul
 
   ingester:
-    image: dockerhub.io/asdazul/restapi-server:9.0.0
+    image: docker.io/asdazul/restapi-server:9.0.0
     depends_on:
       dispatcher:
         condition: service_started
@@ -603,7 +603,7 @@ services:
       - azul
 
   create_roles:
-    image: dockerhub.io/asdazul/restapi-server:9.0.0
+    image: docker.io/asdazul/restapi-server:9.0.0
     entrypoint:
       - /bin/bash
       - -c
@@ -616,7 +616,7 @@ services:
       - azul
 
   restapi:
-    image: dockerhub.io/asdazul/restapi-server:9.0.0
+    image: docker.io/asdazul/restapi-server:9.0.0
     depends_on:
       create_roles:
         condition: service_completed_successfully
@@ -630,7 +630,7 @@ services:
       - azul
 
   web:
-    image: dockerhub.io/asdazul/webui:9.0.0
+    image: docker.io/asdazul/webui:9.0.0
     depends_on:
       restapi:
         condition: service_started
