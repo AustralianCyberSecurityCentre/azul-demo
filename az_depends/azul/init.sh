@@ -76,4 +76,4 @@ put tenants tenant.json azul
 put internalusers user_write.json azul_writer
 put internalusers user_admin.json azul_admin
 
-echo "*************************** Opensearch inatialized ***************************"
+echo "*************************** Opensearch initialised ***************************"

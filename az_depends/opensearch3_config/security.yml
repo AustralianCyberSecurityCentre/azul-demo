@@ -28,7 +28,7 @@ config:
           type: openid
           challenge: false
           config:
-            subject_key: preferred_username
+            subject_key: sub
             roles_key: roles
             # jwks_uri: http://oidc:3000/jwks
             openid_connect_url: http://oidc.localhost/realms/azul/.well-known/openid-configuration
