@@ -32,7 +32,7 @@ The deployment is split into separate compose projects:
 > **WARNING**
 >
 > If you are going to run OpenSearch, please ensure you have expanded the max
-> ulimits as per OpenSearch's/Elasticsarch's documentation. If you do not do
+> ulimits as per OpenSearch's/Elasticsearch's documentation. If you do not do
 > this stability problems are likely to occur.
 >
 > See: https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html
@@ -61,7 +61,7 @@ If you don't want to leave the top level directory you can start them using:
 # run dependencies
 docker compose -f az_depends/docker-compose.yml up -d
 
-# wait 3-5 minutes till you see the following string from the Opensearch container, then contunue to the next step
+# wait 3-5 minutes till you see the following string from the Opensearch container, then continue to the next step
 *************************** Opensearch initialised ***************************
 
 # run Azul
