@@ -86,6 +86,12 @@ Once running, Azul will be available at: http://localhost:8123/
 
 You can sign in as the `basic` user with password `basic12345`.
 
+### Keycloak administration
+
+Once running, Keycloak will be available at: http://oidc.localhost/
+
+You can sign in as `admin` user with password `azul-is-cool`, to make any auth or user related changes.
+
 ## Customising the deployment
 
 Configuration can be modifed before starting the containers. The most important
