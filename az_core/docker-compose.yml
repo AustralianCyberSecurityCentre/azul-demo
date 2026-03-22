@@ -372,7 +372,7 @@ x-common-variables: &common-variables
 
 services:
   dispatcher:
-    image: docker.io/asdazul/dispatcher:9.0.0
+    image: docker.io/asdazul/dispatcher:9.0.0@sha256:6d4bc2a94e71d904acb1fa4f38e958002ea5b5a15bb297b7df0ef835f1cc1e54
     ports:
       - "8111:8111"
     expose:
@@ -566,14 +566,14 @@ services:
       - azul
 
   redis:
-    image: redis:7.4.2
+    image: redis:7.4.2@sha256:fbdbaea47b9ae4ecc2082ecdb4e1cea81e32176ffb1dcf643d422ad07427e5d9
     expose:
       - "6379"
     networks:
       - azul
 
   docs:
-    image: docker.io/asdazul/docs:9.0.0
+    image: docker.io/asdazul/docs:9.0.0@sha256:7ba9ee7c528d6df3022997801b4ac45d3f8afcc1531fcc162f9c19410ce07f51
     ports:
       - "8124:8080"
     expose:
@@ -584,7 +584,7 @@ services:
       - azul
 
   ingester:
-    image: docker.io/asdazul/restapi-server:9.0.0
+    image: docker.io/asdazul/restapi-server:9.0.0@sha256:e5c3c33518bd090cf4d827cd9c62955472ac87825e2a09282fd5ff161c00e671
     depends_on:
       dispatcher:
         condition: service_started
@@ -603,7 +603,7 @@ services:
       - azul
 
   create_roles:
-    image: docker.io/asdazul/restapi-server:9.0.0
+    image: docker.io/asdazul/restapi-server:9.0.0@sha256:e5c3c33518bd090cf4d827cd9c62955472ac87825e2a09282fd5ff161c00e671
     entrypoint:
       - /bin/bash
       - -c
@@ -616,7 +616,7 @@ services:
       - azul
 
   restapi:
-    image: docker.io/asdazul/restapi-server:9.0.0
+    image: docker.io/asdazul/restapi-server:9.0.0@sha256:e5c3c33518bd090cf4d827cd9c62955472ac87825e2a09282fd5ff161c00e671
     depends_on:
       create_roles:
         condition: service_completed_successfully
@@ -630,7 +630,7 @@ services:
       - azul
 
   web:
-    image: docker.io/asdazul/webui:9.0.0
+    image: docker.io/asdazul/webui:9.0.0@sha256:34324f83a9cf0205e444047aa8c5d113c5ec4188ecff62723ebc340943af7807
     depends_on:
       restapi:
         condition: service_started
