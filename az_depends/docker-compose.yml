@@ -1,6 +1,6 @@
 services:
   oidc:
-    image: quay.io/keycloak/keycloak:26.5@sha256:8d44614c74798322c4e07fbe0ecb15cfbb5879d69b484628555f58ade06f0d8c
+    image: quay.io/keycloak/keycloak:26.6@sha256:b0e5dbced1775de4d629f103c0a9cfc057decc62ce8d3cb1c54f8849a6c6eb62
     container_name: keycloak
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
@@ -35,7 +35,7 @@ services:
           - oidc.localhost
 
   opensearch:
-    image: opensearchproject/opensearch:3.5.0@sha256:dbb01641baadae5104e18acd888bf05e8fdd9af3567fd30624a76ba3e5a31dec
+    image: opensearchproject/opensearch:3.6.0@sha256:508d340a2fdf8b9707d4f03435fd41b15f617d8b1495120665186f9912853e32
     ports:
     - "9200:9200"   # REST API
     - "9600:9600"   # Performance Analyzer
@@ -86,7 +86,7 @@ services:
     - azul
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:3.5.0@sha256:03afc96f2f50a02246294aaa37adffc41270104676eff7c5f377c40ae9dd1ff2
+    image: opensearchproject/opensearch-dashboards:3.6.0@sha256:1f4940affc0484d48e51c5d21ad0ecf50f4b33a49e1ad6b493b07f734275d264
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
@@ -124,7 +124,7 @@ services:
       - KAFKA_NUM_PARTITIONS=3
 
   traefik:
-    image: traefik:v3.6.12@sha256:171c9c3565b29f6c133f1c1b43c5d4e5853415198e9e1078c001f8702ff66aec
+    image: traefik:v3.6.13@sha256:5ae9c349154d5298a5d61a7b25e5f3a9f53314f1515e87632120b95051c7917c
     command:
       - "--api.insecure=true"                   # enable dashboard at :8081
       - "--providers.docker=true"               # watch docker labels
