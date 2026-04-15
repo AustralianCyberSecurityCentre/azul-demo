@@ -86,7 +86,7 @@ services:
     - azul
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:3.6.0@sha256:1f4940affc0484d48e51c5d21ad0ecf50f4b33a49e1ad6b493b07f734275d264
+    image: opensearchproject/opensearch-dashboards:3.6.0@sha256:9fe2cbf1d82c3f66a0860ed140415692ce55de4711ed7877ab738e5da1a357c0
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
