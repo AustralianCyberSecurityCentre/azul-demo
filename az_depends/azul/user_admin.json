@@ -1,5 +1,5 @@
 {
-  "password": "dummyPassword!",
+  "password": "dummyPassword1!",
   "backend_roles": ["azul_admin"],
   "description": "reader"
 }
