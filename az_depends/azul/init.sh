@@ -54,7 +54,7 @@ put () {
         --data-binary "@$SCRIPT_DIR/$2" \
         -XPUT \
         -H "Content-Type: application/json" \
-        $ENDPOINT/_opendistro/_security/api/$1/$3
+        $ENDPOINT/_plugins/_security/api/$1/$3
     echo
     echo
 }
@@ -68,7 +68,6 @@ put rolesmapping role_map_official.json s-official
 
 put tenants tenant.json azul
 
-put internalusers user_write.json azul_writer
 put internalusers user_admin.json azul_admin
 
 echo "*************************** Opensearch initialised ***************************"
