@@ -30,4 +30,6 @@ opensearch_dashboards_system:
 azul_writer:
   hash: "AZW_PLACEHOLDER"
   reserved: true
+  backend_roles:
+  - "azul_write"
   description: "azul_writer user"
