@@ -95,6 +95,8 @@ services:
       - "5601"
     environment:
       OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+      OPENSEARCH_USERNAME: kibanaserver
+      OPENSEARCH_PASSWORD: password
     networks:
       - azul
     depends_on:

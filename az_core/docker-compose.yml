@@ -611,7 +611,7 @@ services:
     environment:
       <<: *common-variables
       METASTORE_OPENSEARCH_ADMIN_USERNAME: "azul_admin"
-      METASTORE_OPENSEARCH_ADMIN_PASSWORD: "dummyPassword!"
+      METASTORE_OPENSEARCH_ADMIN_PASSWORD: "dummyPassword1!"
     networks:
       - azul
 

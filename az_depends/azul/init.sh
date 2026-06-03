@@ -44,22 +44,17 @@ sleep 1
 
 # create roles and users in opendistro for azul
 ENDPOINT=${ENDPOINT:="https://localhost:9200"}
-CERT=${CERT:="$SCRIPT_DIR/../config/kirk.pem"}
-KEY=${KEY:="$SCRIPT_DIR/../config/kirk-key.pem"}
-CACERT=${CACERT:="$SCRIPT_DIR/../config/root-ca.pem"}
-
 
 put () {
     echo $2
     curl \
-        --cert $CERT \
-        --key $KEY \
-        --cacert $CACERT \
+        --fail \
         --insecure \
+        -u "admin:$PW_ADMIN" \
         --data-binary "@$SCRIPT_DIR/$2" \
         -XPUT \
         -H "Content-Type: application/json" \
-        $ENDPOINT/_opendistro/_security/api/$1/$3
+        $ENDPOINT/_plugins/_security/api/$1/$3
     echo
     echo
 }
@@ -73,7 +68,6 @@ put rolesmapping role_map_official.json s-official
 
 put tenants tenant.json azul
 
-put internalusers user_write.json azul_writer
 put internalusers user_admin.json azul_admin
 
 echo "*************************** Opensearch initialised ***************************"
