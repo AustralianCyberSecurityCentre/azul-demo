@@ -81,6 +81,12 @@ Note: If you get 403 errors on the WebUI, please ensure the  `Opensearch initial
 >  * 8123 (web ui)
 >  * 80   (traefik for OIDC auth)
 >
+> **Note:** The web UI uses the browser's Web Crypto API for OIDC PKCE
+> authentication, which is only available in [secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts)
+> (HTTPS or localhost). Accessing the UI over HTTP from a
+> non-localhost address will result in a blank page or login failure.
+> Always access via `localhost` or HTTPS.
+>
 
 Once running, Azul will be available at: http://localhost:8123/
 
