@@ -35,7 +35,7 @@ services:
           - oidc.localhost
 
   opensearch:
-    image: opensearchproject/opensearch:3.6.0@sha256:b5dd1512af2a99748c942cfbbd7f32162623336b210667d0fc6333c6321f171d
+    image: opensearchproject/opensearch:3.7.0@sha256:123e6591a47b1d54686890551bdb35739c85193ecded381219fc9e059e18128f
     ports:
     - "9200:9200"   # REST API
     - "9600:9600"   # Performance Analyzer
@@ -87,7 +87,7 @@ services:
     - azul
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:3.6.0@sha256:1ddd64e3a07fd98bc20ccf5174760b51795630a602b81102b37d1e9ee82cb7a9
+    image: opensearchproject/opensearch-dashboards:3.7.0@sha256:ad707f8c85abe5164b10a3277ebc3e7ff2a7034f72898ae0be7371133770151d
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
@@ -127,7 +127,7 @@ services:
       - KAFKA_NUM_PARTITIONS=3
 
   traefik:
-    image: traefik:v3.7.4@sha256:fcdef599e6259359833dd2e1d49f9e964f66825d69bd3dd468f51102ce013d03
+    image: traefik:v3.7.5@sha256:d6858791f9e74df44ca4014166647c41cdc2abd3bf2a71b832ca4e1c6a91b257
     command:
       - "--api.insecure=true"                   # enable dashboard at :8081
       - "--providers.docker=true"               # watch docker labels
