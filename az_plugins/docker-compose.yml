@@ -7,14 +7,14 @@ x-common-variables: &common-variables
 
 services:
   unbox:
-    image: docker.io/asdazul/plugin-unbox:11.1.0@sha256:7d8701d519ec17561254641432864ea2bfb05443e294a4d6af02b6a2d3adc440
+    image: docker.io/asdazul/plugin-unbox:11.2.0@sha256:7d8701d519ec17561254641432864ea2bfb05443e294a4d6af02b6a2d3adc440
     environment:
       <<: *common-variables
     networks:
       - azul
 
   entropy:
-    image: docker.io/asdazul/plugin-entropy:11.1.0@sha256:946b8402ad2347a6d3369656064baaff78b4a2030b867b762e07172c6e3b2487
+    image: docker.io/asdazul/plugin-entropy:11.2.0@sha256:946b8402ad2347a6d3369656064baaff78b4a2030b867b762e07172c6e3b2487
     environment:
       <<: *common-variables
       DISPATCHER_ENDPOINT: http://dispatcher:8111
@@ -22,7 +22,7 @@ services:
       - azul
 
   yara:
-    image: docker.io/asdazul/plugin-yara:11.1.0@sha256:9841d31254807c4e493315e9c1474f2018f3cad2d84c809ae686f4473789d9e0
+    image: docker.io/asdazul/plugin-yara:11.2.0@sha256:d848923fda5414e21930c82b7273ae40e3563147a8879910e60453db88fc5114
     environment:
       <<: *common-variables
       PLUGIN_NAME_SUFFIX: demo
