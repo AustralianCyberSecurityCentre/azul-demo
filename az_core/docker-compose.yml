@@ -372,7 +372,7 @@ x-common-variables: &common-variables
 
 services:
   dispatcher:
-    image: docker.io/asdazul/dispatcher:11.1.0@sha256:84616e81191ffcd64d07345335eb33204c6abe195fefcd546801bdfe7a38e24b
+    image: docker.io/asdazul/dispatcher:11.2.0@sha256:84616e81191ffcd64d07345335eb33204c6abe195fefcd546801bdfe7a38e24b
     ports:
       - "8111:8111"
     expose:
@@ -573,7 +573,7 @@ services:
       - azul
 
   docs:
-    image: docker.io/asdazul/docs:11.1.0@sha256:7f7a7013a3f39cef3607a468256b070dfc4ac76b414dd8fe10c75fad672a4cd5
+    image: docker.io/asdazul/docs:11.2.0@sha256:cfa75ca17cc2e536eeb687cddbe83c1c4f128cd012d54e5565846153715eb447
     ports:
       - "8124:8080"
     expose:
@@ -584,7 +584,7 @@ services:
       - azul
 
   ingester:
-    image: docker.io/asdazul/restapi-server:11.1.0@sha256:5aca669cd46cc55d0b66aa57761ef121af87bc56a7136e1da263032db2adf350
+    image: docker.io/asdazul/restapi-server:11.2.0@sha256:f580ef3c3c772a714036bb6df78ee05b178f75bec6146d0936a882b1ce7ad5e3
     depends_on:
       dispatcher:
         condition: service_started
@@ -603,7 +603,7 @@ services:
       - azul
 
   create_roles:
-    image: docker.io/asdazul/restapi-server:11.1.0@sha256:5aca669cd46cc55d0b66aa57761ef121af87bc56a7136e1da263032db2adf350
+    image: docker.io/asdazul/restapi-server:11.2.0@sha256:f580ef3c3c772a714036bb6df78ee05b178f75bec6146d0936a882b1ce7ad5e3
     entrypoint:
       - /bin/bash
       - -c
@@ -616,7 +616,7 @@ services:
       - azul
 
   restapi:
-    image: docker.io/asdazul/restapi-server:11.1.0@sha256:5aca669cd46cc55d0b66aa57761ef121af87bc56a7136e1da263032db2adf350
+    image: docker.io/asdazul/restapi-server:11.2.0@sha256:f580ef3c3c772a714036bb6df78ee05b178f75bec6146d0936a882b1ce7ad5e3
     depends_on:
       create_roles:
         condition: service_completed_successfully
@@ -630,7 +630,7 @@ services:
       - azul
 
   web:
-    image: docker.io/asdazul/webui:11.1.0@sha256:374f1cbc36e55a74a68a2e28a9eff3efa39a9d8751b9b6f8f50f21095b4c847c
+    image: docker.io/asdazul/webui:11.2.0@sha256:5cc300e99db72ce639446a09fd603ef14fe932559f28b2f0af7883f34a6b37f4
     depends_on:
       restapi:
         condition: service_started
