@@ -35,7 +35,7 @@ services:
           - oidc.localhost
 
   opensearch:
-    image: opensearchproject/opensearch:3.7.0@sha256:44ba7ea58a319adf61c33ab16873f9ef5dbb30b291a832d375172f0b2d24e3c9
+    image: opensearchproject/opensearch:3.8.0@sha256:bcc1797519726ceb6d651d4a3e60b7c30da91793914a8dfe75fd441d4f641509
     ports:
     - "9200:9200"   # REST API
     - "9600:9600"   # Performance Analyzer
@@ -87,7 +87,7 @@ services:
     - azul
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:3.7.0@sha256:1c9e0a50472123bd2cde615ffb7157ef436db794e082dba09e42c3a6d3ce91a3
+    image: opensearchproject/opensearch-dashboards:3.8.0@sha256:ca28e40a095f7f03c5c02b4aa159fbf09638bc4b3af16f9d556bf6721a0783b1
     container_name: opensearch-dashboards
     ports:
       - 5601:5601
