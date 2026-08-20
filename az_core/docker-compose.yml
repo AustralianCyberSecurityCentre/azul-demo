@@ -660,6 +660,9 @@ services:
       - "8000"
     environment:
       <<: *common-variables
+      LOGGER_AUDIT_FILE: "/logs/restapi-audit.log"
+    volumes:
+      - restapi_logs:/logs/:rw
     networks:
       - azul
 
@@ -682,3 +685,8 @@ networks:
   azul:
     name: azul_net
     external: true # Network is defined in az_depends/docker-compose.yml
+
+volumes:
+  restapi_logs:
+    driver: local
+
