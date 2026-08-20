@@ -560,7 +560,8 @@ services:
           - description: Local submitter or point of contact for task
             name: user
             required: false
-    # volumes:
+    volumes:
+      - dispatcher_logs:/logs/dispatcher/:rw
     #   - './demo_bucket_config.json:/config.json'
     networks:
       - azul
@@ -689,4 +690,5 @@ networks:
 volumes:
   restapi_logs:
     driver: local
-
+  dispatcher_logs:
+    driver: local
