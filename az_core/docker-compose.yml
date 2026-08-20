@@ -635,7 +635,7 @@ services:
         condition: service_completed_successfully
     environment:
       <<: *common-variables
-    entrypoint: ingest-binary
+    entrypoint: azul-metastore ingest-binary
     networks:
       - azul
 
