@@ -387,9 +387,9 @@ services:
       DP.LOG_PATH: /logs/dispatcher/
       DP.STREAMS.BACKEND: s3
       DP.STREAMS.S3.BUCKET: "azul"
-      DP.STREAMS.S3.ENDPOINT: "minio:9000"
-      DP.STREAMS.S3.ACCESS_KEY: "minio-root-user"
-      DP.STREAMS.S3.SECRET_KEY: "minio-root-password"
+      DP.STREAMS.S3.ENDPOINT: "seaweedfs:8333"
+      DP.STREAMS.S3.ACCESS_KEY: "seaweedfs-admin"
+      DP.STREAMS.S3.SECRET_KEY: "seaweedfs-secretkey"
       DP.STREAMS.S3.SECURE: "false"
       DP.EVENTS.SOURCES: |
         sources:
@@ -560,7 +560,8 @@ services:
           - description: Local submitter or point of contact for task
             name: user
             required: false
-    # volumes:
+    volumes:
+      - dispatcher_logs:/logs/dispatcher/:rw
     #   - './demo_bucket_config.json:/config.json'
     networks:
       - azul
@@ -583,7 +584,22 @@ services:
     networks:
       - azul
 
-  ingester:
+  # FUTURE post 12.0.0 release single pod.
+  # ingester:
+  #   image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
+  #   depends_on:
+  #     dispatcher:
+  #       condition: service_started
+  #     create_roles:
+  #       condition: service_completed_successfully
+  #   environment:
+  #     <<: *common-variables
+  #   entrypoint: azul-metastore ingest-all
+  #   networks:
+  #     - azul
+  
+  # FUTURE - merge to one ingester
+  ingester-plugin:
     image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
     depends_on:
       dispatcher:
@@ -592,22 +608,41 @@ services:
         condition: service_completed_successfully
     environment:
       <<: *common-variables
-    entrypoint:
-      - /bin/bash
-      - -c
-      - |
-        azul-metastore ingest-plugin &
-        METASTORE_PROMETHEUS_PORT=9877 azul-metastore ingest-status &
-        METASTORE_PROMETHEUS_PORT=9878 azul-metastore ingest-binary
+    entrypoint: azul-metastore ingest-plugin
+    networks:
+      - azul
+  
+  # FUTURE - merge to one ingester
+  ingester-status:
+    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
+    depends_on:
+      dispatcher:
+        condition: service_started
+      create_roles:
+        condition: service_completed_successfully
+    environment:
+      <<: *common-variables
+    entrypoint: azul-metastore ingest-status
+    networks:
+      - azul
+
+  # FUTURE - merge to one ingester
+  ingester-binary:
+    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
+    depends_on:
+      dispatcher:
+        condition: service_started
+      create_roles:
+        condition: service_completed_successfully
+    environment:
+      <<: *common-variables
+    entrypoint: azul-metastore ingest-binary
     networks:
       - azul
 
   create_roles:
     image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
-    entrypoint:
-      - /bin/bash
-      - -c
-      - azul-metastore apply-opensearch-config --rolesmapping --no-input
+    entrypoint: azul-metastore apply-opensearch-config --rolesmapping --no-input
     environment:
       <<: *common-variables
       METASTORE_OPENSEARCH_ADMIN_USERNAME: "azul_admin"
@@ -626,6 +661,9 @@ services:
       - "8000"
     environment:
       <<: *common-variables
+      LOGGER_AUDIT_FILE: "/logs/restapi-audit.log"
+    volumes:
+      - restapi_logs:/logs/:rw
     networks:
       - azul
 
@@ -648,3 +686,9 @@ networks:
   azul:
     name: azul_net
     external: true # Network is defined in az_depends/docker-compose.yml
+
+volumes:
+  restapi_logs:
+    driver: local
+  dispatcher_logs:
+    driver: local

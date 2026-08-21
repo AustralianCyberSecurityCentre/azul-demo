@@ -12,7 +12,7 @@ The deployment is split into separate compose projects:
   much all dev/testing.
 
   * keycloak for OIDC
-  * minio
+  * seaweedfs
   * opensearch
   * opensearch-dashboard
   * kafka
