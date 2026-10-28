@@ -79,7 +79,7 @@ Note: If you get 403 errors on the WebUI, please ensure the  `Opensearch initial
 > be sure to port forward the relevant service ports:
 >
 >  * 8123 (web ui)
->  * 80   (traefik for OIDC auth)
+>  * 8080   (traefik for OIDC auth)
 >
 > **Note:** The web UI uses the browser's Web Crypto API for OIDC PKCE
 > authentication, which is only available in [secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts)

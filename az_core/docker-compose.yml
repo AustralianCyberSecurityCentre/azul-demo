@@ -372,7 +372,7 @@ x-common-variables: &common-variables
 
 services:
   dispatcher:
-    image: docker.io/asdazul/dispatcher:12.0.0@sha256:e245ef4f9d6d3ffb99f8bd9996b6fc747b277f849cba322de5ca1bd2275de368
+    image: docker.io/asdazul/dispatcher:13.0.0@sha256:eb718d6fc662fb73a00f534b1eab34474eb4138c3a782a5123305afc298f719c
     ports:
       - "8111:8111"
     expose:
@@ -567,14 +567,14 @@ services:
       - azul
 
   redis:
-    image: redis:8.10.2@sha256:97ec88159e6d7cfb5ddef9015386087d58a912de80112f06ebdfa78fa5989901
+    image: redis:8.8.3-trixie@sha256:30928ad7fd204ec536f1eb84e3cd6826d29a7ebe06c9cf0143c287c466a4568f
     expose:
       - "6379"
     networks:
       - azul
 
   docs:
-    image: docker.io/asdazul/docs:12.0.0@sha256:7053050a6534e6ff01981951fd4ca2c3e33df68aad08d23a7503a7edbca45fe3
+    image: docker.io/asdazul/docs:13.0.0@sha256:b221a3d6a99e3bf62c76f0465b57aa41419f9325f818f7351e3451eadb895338
     ports:
       - "8124:8080"
     expose:
@@ -584,23 +584,8 @@ services:
     networks:
       - azul
 
-  # FUTURE post 12.0.0 release single pod.
-  # ingester:
-  #   image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
-  #   depends_on:
-  #     dispatcher:
-  #       condition: service_started
-  #     create_roles:
-  #       condition: service_completed_successfully
-  #   environment:
-  #     <<: *common-variables
-  #   entrypoint: azul-metastore ingest-all
-  #   networks:
-  #     - azul
-  
-  # FUTURE - merge to one ingester
-  ingester-plugin:
-    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
+  ingester:
+    image: docker.io/asdazul/restapi-server:13.0.0@sha256:8eedc9915f5360ef10a0e41e3e4a2c1635d434f306a214eac2568e8a67d4a416
     depends_on:
       dispatcher:
         condition: service_started
@@ -608,41 +593,13 @@ services:
         condition: service_completed_successfully
     environment:
       <<: *common-variables
-    entrypoint: azul-metastore ingest-plugin
-    networks:
-      - azul
-  
-  # FUTURE - merge to one ingester
-  ingester-status:
-    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
-    depends_on:
-      dispatcher:
-        condition: service_started
-      create_roles:
-        condition: service_completed_successfully
-    environment:
-      <<: *common-variables
-    entrypoint: azul-metastore ingest-status
-    networks:
-      - azul
-
-  # FUTURE - merge to one ingester
-  ingester-binary:
-    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
-    depends_on:
-      dispatcher:
-        condition: service_started
-      create_roles:
-        condition: service_completed_successfully
-    environment:
-      <<: *common-variables
-    entrypoint: azul-metastore ingest-binary
+    entrypoint: azul-metastore ingest-all
     networks:
       - azul
 
   create_roles:
-    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
-    entrypoint: azul-metastore apply-opensearch-config --rolesmapping --no-input
+    image: docker.io/asdazul/restapi-server:13.0.0@sha256:8eedc9915f5360ef10a0e41e3e4a2c1635d434f306a214eac2568e8a67d4a416
+    entrypoint: azul-metastore apply-opensearch-config --rolesmapping --no-input --override
     environment:
       <<: *common-variables
       METASTORE_OPENSEARCH_ADMIN_USERNAME: "azul_admin"
@@ -651,7 +608,7 @@ services:
       - azul
 
   restapi:
-    image: docker.io/asdazul/restapi-server:12.0.0@sha256:93d8af1c0a2dc05dea36396a1221d7741d3b6fcaff85959087691d00279eb213
+    image: docker.io/asdazul/restapi-server:13.0.0@sha256:8eedc9915f5360ef10a0e41e3e4a2c1635d434f306a214eac2568e8a67d4a416
     depends_on:
       create_roles:
         condition: service_completed_successfully
@@ -668,7 +625,7 @@ services:
       - azul
 
   web:
-    image: docker.io/asdazul/webui:12.0.0@sha256:d4631fbf83a39cbcbe94943c4b4a562a58e4170c2b0656a5dc611ede25805b6f
+    image: docker.io/asdazul/webui:13.0.0@sha256:e2e7781605fde513aaf12e9dfde543a0930bc11a27faf68f3d6d284bc20fd752
     depends_on:
       restapi:
         condition: service_started
