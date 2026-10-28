@@ -599,7 +599,7 @@ services:
 
   create_roles:
     image: docker.io/asdazul/restapi-server:13.0.0@sha256:8eedc9915f5360ef10a0e41e3e4a2c1635d434f306a214eac2568e8a67d4a416
-    entrypoint: azul-metastore apply-opensearch-config --rolesmapping --no-input
+    entrypoint: azul-metastore apply-opensearch-config --rolesmapping --no-input --override
     environment:
       <<: *common-variables
       METASTORE_OPENSEARCH_ADMIN_USERNAME: "azul_admin"

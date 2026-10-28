@@ -9,7 +9,37 @@
       {
         "name": "azul-access",
         "description": "Provides base level access to view Azul"
+      },
+      {
+        "name": "OFFICIAL",
+        "description": "official role."
+      },
+      {
+        "name": "MORE OFFICIAL",
+        "description": "more official role."
+      },
+      {
+        "name": "LESS OFFICIAL",
+        "description": "less official role."
+      },
+      {
+        "name": "TLP:CLEAR",
+        "description": "clear role."
+      },
+      {
+        "name": "TRUESTRIKE",
+        "description": "trustrike role."
+      },
+      {
+        "name": "REL:APPLE",
+        "description": "apple role."
+      },
+      {
+        "name": "FIREBALL",
+        "description": "fireball role."
       }
+
+
     ]
   },
   "groups": [
@@ -18,7 +48,7 @@
       "path": "/general",
       "subGroups": [],
       "attributes": {},
-      "realmRoles": ["azul-access"],
+      "realmRoles": ["azul-access", "OFFICIAL", "MORE OFFICIAL", "LESS OFFICIAL", "TLP:CLEAR", "REL:APPLE", "FIREBALL", "TRUESTRIKE"],
       "clientRoles": {}
     },
     {
