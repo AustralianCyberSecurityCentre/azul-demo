@@ -1,6 +1,6 @@
 services:
   oidc:
-    image: quay.io/keycloak/keycloak:26.6@sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4
+    image: quay.io/keycloak/keycloak:26.8@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b
     container_name: keycloak
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
@@ -35,7 +35,7 @@ services:
           - oidc.localhost
 
   opensearch:
-    image: opensearchproject/opensearch:3.9.0@sha256:adfa61f85025d06b4aeb562e7e74fde7e31c437039c93c3862c17e9acebd6c7c
+    image: opensearchproject/opensearch:3.9.0@sha256:3b55f6b6249cfdb92b52ee59adc8a266203ba9ef9f5d82544fad6f1af2f3609e
     ports:
     - "9200:9200"   # REST API
     - "9600:9600"   # Performance Analyzer
@@ -103,7 +103,7 @@ services:
       - opensearch
 
   kafka:
-    image: docker.io/apache/kafka:4.3.1@sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837
+    image: docker.io/apache/kafka:4.4.0@sha256:833b867a9585a141da455dc2b57431c65cbccb27f11c91f694444cca9f777e0f
     container_name: broker
     ports:
       - "9092:9092"

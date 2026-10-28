@@ -9,10 +9,6 @@
       {
         "name": "azul-access",
         "description": "Provides base level access to view Azul"
-      }, 
-      {
-        "name": "azul_read",
-        "description": "Provides base level access to view Azul"
       }
     ]
   },
@@ -51,7 +47,7 @@
       "email": "test@gmail.com",
       "emailVerified": true,
       "groups": ["/general"],
-      "realmRoles": ["default-roles-azul", "azul_read"],
+      "realmRoles": ["default-roles-azul", "azul-access"],
       "credentials": [
         {
           "type": "password",
