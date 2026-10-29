@@ -13,11 +13,43 @@ services:
     networks:
       - azul
 
+  malcarve:
+    image: docker.io/asdazul/plugin-malcarve:13.0.0@sha256:155562620d0bc165abf95c9e01e481048b04e1b6a038584c40d8854a9ce9c026
+    environment:
+      <<: *common-variables
+    networks:
+      - azul
+
   entropy:
     image: docker.io/asdazul/plugin-entropy:13.0.0@sha256:b870f3f507e595c5db156599d3be7215b555bbba4b5d928a76f3701683d6e92d
     environment:
       <<: *common-variables
       DISPATCHER_ENDPOINT: http://dispatcher:8111
+    networks:
+      - azul
+
+  mandiant-capa:
+    image: docker.io/asdazul/plugin-mandiant-capa:13.0.0@sha256:8baaf1643d408d3956198fa5d81c302fd1a391e35218fa2ff33988bc40207e03
+    environment:
+      <<: *common-variables
+    networks:
+      - azul
+
+  tika:
+    image: docker.io/asdazul/plugin-tika:13.0.0@sha256:c75c3910d70e2fb1ac239edbfbe7b0a1e1f431e97b9750f158a8a3079cbacef4
+    environment:
+      <<: *common-variables
+    networks:
+      - azul
+    command:
+      - "--config"
+      - "tika_server"
+      - "http://apache-tika:9998"
+
+  apache-tika:
+    image: docker.io/apache/tika:3.3.3.0-full@sha256:6ef30abd65df4b6c478907904099d0245bdb0e0686f94fb9bc7493558442bb74
+    environment:
+      <<: *common-variables
     networks:
       - azul
 
