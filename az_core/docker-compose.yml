@@ -567,7 +567,7 @@ services:
       - azul
 
   redis:
-    image: redis:8.8.3-trixie@sha256:418e397fd48d66e450af13baab123397f2d2580b07ef310c3a5dbe96c3d731f1
+    image: redis:8.10.2-trixie@sha256:97ec88159e6d7cfb5ddef9015386087d58a912de80112f06ebdfa78fa5989901
     expose:
       - "6379"
     networks:
